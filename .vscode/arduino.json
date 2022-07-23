@@ -1,0 +1,6 @@
+{
+    "configuration": "chip=3227,clock=20internal,bodvoltage=1v8,bodmode=disabled,eesave=enable,millis=enabled,resetpin=UPDI,startuptime=8,wiremode=mors,printf=default,attach=allenabled",
+    "board": "megaTinyCore:megaavr:atxy7",
+    "programmer": "megaTinyCore:jtag2updi",
+    "sketch": "SRC\\LED_matrix_test\\LED_matrix_test.ino"
+}
