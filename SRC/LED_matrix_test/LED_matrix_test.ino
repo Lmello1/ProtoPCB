@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <util/atomic.h>
 
 static constexpr uint8_t LATCH_PIN = 12;
 static constexpr uint8_t CLOCK_PIN = 13;
@@ -16,25 +17,48 @@ using rowmask_t = uint16_t;
 static constexpr uint8_t ROW_DELAY = 33;
 
 /** 
- * \brief Buffer containing bitmasks for each row in the matrix display
+ * \brief Buffer containing bitmasks for each row in the matrix display.
+ * Note that this buffer is frequently read by the matrix drawing interrupt, so to avoid 
+ * scrambled data, any mutation of this variable should be surrounded in an ATOMIC_BLOCK, which disables interrupts
+ * temporarily
  */
 static volatile rowmask_t matrix_buf[16] = {0};
 
+
 void setup(void) {
+    matrix_buf[0]  = 0b1000000000000011;
+    matrix_buf[1]  = 0b0100000000000011;
+    matrix_buf[2]  = 0b0000000000000000;
+    matrix_buf[3]  = 0b0000000000000000;
+    matrix_buf[4]  = 0b0000000000000000;
+    matrix_buf[5]  = 0b0000000000000000;
+    matrix_buf[6]  = 0b0000000000000000;
+    matrix_buf[7]  = 0b0000000000000000;
+    matrix_buf[8]  = 0b0000000000000000;
+    matrix_buf[9]  = 0b0000000000000000;
+    matrix_buf[10] = 0b0000000000000000;
+    matrix_buf[11] = 0b0000000000000000;
+    matrix_buf[12] = 0b0000000000000000;
+    matrix_buf[13] = 0b0000000000000000;
+    matrix_buf[14] = 0b0000000000000001;
+    matrix_buf[15] = 0b1000000000000011; 
+
     pinMode(LATCH_PIN, OUTPUT);
     pinMode(CLOCK_PIN, OUTPUT);
     pinMode(DATA_PIN, OUTPUT);
-    
-    //Initialize all timer1 control registers to 0
-    TCCR1A = TCCR1B = TCNT1 = 0;
-    //Enable Counter mode for the timer, counting to the specified value (stored in OCR1A) before interrupt
-    TCCR1A |= _BV(WGM12);
-    //Set the clock to be the CPU frequency
-    TCCR1B |= _BV(CS10);
-    //Interrupt when timer reaches the value in OCRA register
-    TIMSK1 |= _BV(OCIE1A);
-    //Count to 33332 before triggering interrupt, gives us almost exactly 30hz refresh rate for the whole screen, and 0.002 seconds between showing each row
-    OCR1A = 33332;
+   
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        //Initialize all timer1 control registers to 0
+        TCCR1A = TCCR1B = TCNT1 = 0;
+        //Enable Counter mode for the timer, counting to the specified value (stored in OCR1A) before interrupt
+        TCCR1A |= _BV(WGM12);
+        //Set the clock to be the CPU frequency
+        TCCR1B |= _BV(CS10);
+        //Interrupt when timer reaches the value in OCRA register
+        TIMSK1 |= _BV(OCIE1A);
+        //Count to 33332 before triggering interrupt, gives us almost exactly 30hz refresh rate for the whole screen, and 0.002 seconds between showing each row
+        OCR1A = 33332;
+    }
 }
 
 
@@ -51,7 +75,7 @@ void loop(void) {
     shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, B01010101);
     shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, B01010101);
     digitalWrite(LATCH_PIN, HIGH);
-
+    
     delay(500);
 }
 
