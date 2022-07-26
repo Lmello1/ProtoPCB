@@ -18,22 +18,23 @@ static constexpr uint8_t ROW_DELAY = 33;
 /** 
  * \brief Buffer containing bitmasks for each row in the matrix display
  */
-static rowmask_t matrix_buf[16] = {0};
+static volatile rowmask_t matrix_buf[16] = {0};
 
 void setup(void) {
     pinMode(LATCH_PIN, OUTPUT);
     pinMode(CLOCK_PIN, OUTPUT);
     pinMode(DATA_PIN, OUTPUT);
-
-    TCCR1A = TCCR1B = TCNT1 = OCR1A = 0;
-    //Enable Counter mode for the timer, counting to the specified value before interrupt
-    TCCR1A |= _BV(WGM01);
-    //Set the clock to be the CPU frequency / 1024
-    TCCR1B |= _BV(CS02) | _BV(CS00);
+    
+    //Initialize all timer1 control registers to 0
+    TCCR1A = TCCR1B = TCNT1 = 0;
+    //Enable Counter mode for the timer, counting to the specified value (stored in OCR1A) before interrupt
+    TCCR1A |= _BV(WGM12);
+    //Set the clock to be the CPU frequency
+    TCCR1B |= _BV(CS10);
     //Interrupt when timer reaches the value in OCRA register
-    TIMSK1 |= _BV(OCIE0A);
-    //Count to 255 before triggering interrupt
-    OCR1A = 255;
+    TIMSK1 |= _BV(OCIE1A);
+    //Count to 33332 before triggering interrupt, gives us almost exactly 30hz refresh rate for the whole screen, and 0.002 seconds between showing each row
+    OCR1A = 33332;
 }
 
 
@@ -58,15 +59,8 @@ void loop(void) {
  * Set or unset an LED in the matrix display by (x, y) coordinates
  */
 inline void set(uint8_t x, uint8_t y, uint8_t set) {
-    matrix_buf[y] = (matrix_buf[y] & ~(LED_ON >> x)) | (matrix_buf[y] | (set >> x));
-}
-
-/**
- * Write the data contained in `matrix_buf` to the LED matrix
- */
-void render(void) {
-    for(uint8_t i = 0; i < 16; ++i) {
-        
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        matrix_buf[y] = (matrix_buf[y] & ~(LED_ON >> x)) | (matrix_buf[y] | (set >> x));
     }
 }
 
