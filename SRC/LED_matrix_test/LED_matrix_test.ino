@@ -1,35 +1,33 @@
-const int latchPin = 12;
-const int clockPin = 13;
-const int dataPin = 9;
+#include <Arduino.h>
 
 
+static constexpr uint8_t LATCH_PIN = 12;
+static constexpr uint8_t CLOCK_PIN = 13;
+static constexpr uint8_t DATA_PIN = 9;
 
- 
-void setup ()
-{
-  pinMode(latchPin, OUTPUT);
-  pinMode(clockPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);
+
+void setup(void) {
+    pinMode(LATCH_PIN, OUTPUT);
+    pinMode(CLOCK_PIN, OUTPUT);
+    pinMode(DATA_PIN, OUTPUT);
 }
-void loop()
-{
-    digitalWrite(latchPin, LOW);
- 
-    shiftOut(dataPin, clockPin, MSBFIRST, B10101010);
 
-    shiftOut(dataPin, clockPin, MSBFIRST, B10101010);
-  
-    digitalWrite(latchPin, HIGH);
- 
+
+void loop(void) {
+    digitalWrite(LATCH_PIN, LOW);
+
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, B10101010);
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, B10101010);
+    digitalWrite(LATCH_PIN, HIGH);
+
     delay(500);
 
-    digitalWrite(latchPin, LOW);
- 
-    shiftOut(dataPin, clockPin, MSBFIRST, B01010101);
+    digitalWrite(LATCH_PIN, LOW);
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, 0b101010101);
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, B01010101);
+    digitalWrite(LATCH_PIN, HIGH);
 
-    shiftOut(dataPin, clockPin, MSBFIRST, B01010101);
-  
-    digitalWrite(latchPin, HIGH);
- 
     delay(500);
 }
+
+
