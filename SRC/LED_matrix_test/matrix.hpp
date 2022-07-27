@@ -49,8 +49,8 @@ inline void unset(uint8_t x, uint8_t y) {
  */
 __attribute__((always_inline))
 inline void setrow(uint8_t row, uint16_t val) {
-    screen_buf[row] = (uint8_t)val;
-    screen_buf[row + 1] = (uint8_t)(val >> 8);
+    screen_buf[row * 2 + 1] = (uint8_t)val;
+    screen_buf[row * 2] = (uint8_t)(val >> 8);
 }
 
 }
