@@ -4,6 +4,9 @@
 static constexpr uint8_t LATCH_PIN = 12;
 static constexpr uint8_t CLOCK_PIN = 13;
 static constexpr uint8_t DATA_PIN = 9;
+const int Button1 = 15;
+const int Button2 = 16;
+const int Button3 = 17;
 
 /** \brief Constant passed to the `set` function to turn an LED on, so we can eliminate an unneeded bitshift */
 static constexpr uint16_t LED_ON = 0b1000000000000000;
