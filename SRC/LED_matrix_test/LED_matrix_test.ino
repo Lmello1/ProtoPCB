@@ -54,8 +54,8 @@ void setup(void) {
     pinMode(CLOCK_PIN, OUTPUT);
     pinMode(DATA_PIN, OUTPUT);
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-      //https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3224-3226-3227-Data-Sheet-DS40002345A.pdf#_OPENTOPIC_TOC_PROCESSING_d5209e60328
-        TCB0.CCMP = 10000;
+        //https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3224-3226-3227-Data-Sheet-DS40002345A.pdf#_OPENTOPIC_TOC_PROCESSING_d5209e60328
+        TCB0.CCMP = 4200; //nice
         TCB0.INTCTRL = 000000001;
         TCB0.CTRLA |= (1 << TCB_ENABLE_bp) | TCB_CLKSEL_DIV2_gc;
     }
