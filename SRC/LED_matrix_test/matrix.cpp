@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <util/atomic.h>
 
-volatile matrix::rowmask_t matrix::screen_buf[32] = {0};
+volatile matrix::rowmask_t matrix::screen_buf[32] = {1};
 
 /** 
  * \brief Interrupt triggered by timer b that is used to display the LED matrix row by row

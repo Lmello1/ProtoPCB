@@ -28,8 +28,8 @@ extern volatile rowmask_t screen_buf[32];
  */
 __attribute__((always_inline))
 inline void set(uint8_t x, uint8_t y) {
-    uint8_t i = y * 2 + (x > 3 ? 1 : 0);
-    screen_buf[i] |= (LED_ON >> x);
+    uint8_t i = y * 2 + (x > 7 ? 1 : 0);
+    screen_buf[i] |= (LED_ON >> (x % 8));
 }
 
 /**
@@ -37,8 +37,8 @@ inline void set(uint8_t x, uint8_t y) {
  */
 __attribute__((always_inline))
 inline void unset(uint8_t x, uint8_t y) {
-    uint8_t i = y * 2 + (x > 3 ? 1 : 0);
-    screen_buf[i] &= ~(LED_ON >> x);
+    uint8_t i = y * 2 + (x > 7 ? 1 : 0);
+    screen_buf[i] &= ~(LED_ON >> (x % 8));
 }
 
 /**

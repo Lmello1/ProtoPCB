@@ -27,15 +27,24 @@ void setup(void) {
     pinMode(LATCH_PIN, OUTPUT);
     pinMode(CLOCK_PIN, OUTPUT);
     pinMode(DATA_PIN, OUTPUT);
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
         //https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3224-3226-3227-Data-Sheet-DS40002345A.pdf#_OPENTOPIC_TOC_PROCESSING_d5209e60328
         TCB0.CCMP = 42000; //nice
-        TCB0.INTCTRL = 000000001;
+        TCB0.INTCTRL = 0b00000001;
         TCB0.CTRLA |= (1 << TCB_ENABLE_bp) | TCB_CLKSEL_DIV2_gc;
     }
 }
 
 
 void loop(void) {
+    static uint8_t x = 0;
+    static uint8_t y = 0;
     
+    matrix::set(x, y);
+    delay(10);
+    
+
+    matrix::unset(x, y);
+    x = (x < 15) ? x + 1 : 0;
+    y = (y < 15) ? y + 1 : 0;
 }
