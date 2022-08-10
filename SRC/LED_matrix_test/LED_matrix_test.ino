@@ -6,6 +6,7 @@ static constexpr uint8_t BUTTON_1 = 15;
 static constexpr uint8_t BUTTON_2 = 16;
 static constexpr uint8_t BUTTON_3 = 17;
 
+
 void setup(void) {
     matrix::setrow(0,  0b0000000000000000);
     matrix::setrow(1,  0b0000000000000000);
@@ -29,9 +30,10 @@ void setup(void) {
     pinMode(DATA_PIN, OUTPUT);
     ATOMIC_BLOCK(ATOMIC_FORCEON) {
         //https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3224-3226-3227-Data-Sheet-DS40002345A.pdf#_OPENTOPIC_TOC_PROCESSING_d5209e60328
-        TCB0.CCMP = 42000; //nice
-        TCB0.INTCTRL = 0b00000001;
-        TCB0.CTRLA |= (1 << TCB_ENABLE_bp) | TCB_CLKSEL_DIV2_gc;
+        TCA0.SINGLE.PER = 100;
+        TCA0.SINGLE.CTRLA |= 0b00001111;
+        TCA0.SINGLE.CMP0 = 1041;
+        TCA0.SINGLE.INTCTRL = 0b00010000;
     }
 }
 
@@ -42,7 +44,6 @@ void loop(void) {
     
     matrix::set(x, y);
     delay(10);
-    
 
     matrix::unset(x, y);
     x = (x < 15) ? x + 1 : 0;
