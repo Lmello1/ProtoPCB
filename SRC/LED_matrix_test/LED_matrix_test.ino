@@ -8,7 +8,7 @@ static constexpr uint8_t BUTTON_3 = 17;
 
 
 void setup(void) {
-    /*matrix::setrow(0,  0b0000000000000000);
+    matrix::setrow(0,  0b0000000000000000);
     matrix::setrow(1,  0b0000000000000000);
     matrix::setrow(2,  0b0000000000000000);
     matrix::setrow(3,  0b0000000000000000);
@@ -23,48 +23,29 @@ void setup(void) {
     matrix::setrow(12, 0b0000000000000000);
     matrix::setrow(13, 0b0000000000000000);
     matrix::setrow(14, 0b0000000000000000);
-    matrix::setrow(15, 0b0000000000000000);*/
-
-    //CLKCTRL.MCLKCTRLA |= 0b10000000;
+    matrix::setrow(15, 0b0000000000000000);
 
     pinMode(LATCH_PIN, OUTPUT);
     pinMode(CLOCK_PIN, OUTPUT);
     pinMode(DATA_PIN, OUTPUT);
-    /*ATOMIC_BLOCK(ATOMIC_FORCEON) {
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
         //https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3224-3226-3227-Data-Sheet-DS40002345A.pdf#_OPENTOPIC_TOC_PROCESSING_d5209e60328
         TCA0.SINGLE.PER = 100;
         TCA0.SINGLE.CTRLA |= 0b00001111;
         TCA0.SINGLE.CMP0 = 1041;
         TCA0.SINGLE.INTCTRL = 0b00010000;
-    }*/
-    
-    /*for(;;) {
-        static uint8_t x = 0;
-        static uint8_t y = 0;
-        
-        matrix::set(x, y);
-        delay(10);
-
-        matrix::unset(x, y);
-        x = (x < 15) ? x + 1 : 0;
-        y = (y < 15) ? y + 1 : 0;
-
-    }*/
-
-    
+    }
 }
 
-void loop() {
-    static bool data = true;
-    delay(100);
-    digitalWrite(LATCH_PIN, LOW);
+
+void loop(void) {
+    /*static uint8_t x = 0;
+    static uint8_t y = 0;
+    
+    matrix::set(x, y);
     delay(10);
-    digitalWrite(DATA_PIN, data);
-    delay(10);
-    digitalWrite(CLOCK_PIN, HIGH);
-    delay(10);
-    digitalWrite(CLOCK_PIN, LOW);
-    delay(10);
-    digitalWrite(LATCH_PIN, HIGH);
-    data = !data;
+
+    matrix::unset(x, y);
+    x = (x < 15) ? x + 1 : 0;
+    y = (y < 15) ? y + 1 : 0;*/
 }
