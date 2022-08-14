@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <util/atomic.h>
 
-volatile matrix::rowmask_t matrix::screen_buf[32] = {1};
+volatile matrix::rowmask_t matrix::screen_buf[32] = {0};
 
 
 /** 
@@ -13,19 +13,17 @@ ISR(TCA0_CMP0_vect) {
     static uint8_t row = 0;
     //Increment the currently displayed row or reset to the first row if we have displayed the last one
     row = (row >= 32) ? 0 : row + 2;
-    const uint16_t rowbits = 0b1000000000000000 >> (row / 2);
+    const uint16_t rowbits = 0b1000000000000000;// >> (row / 2);
     digitalWrite(LATCH_PIN, LOW);
     //write lower 8 row bits to U4
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, ~(uint8_t)(rowbits >> 8));
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, ~(uint8_t)(rowbits));
     //write upper 8 row bits to U3
-    //shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, ~(uint8_t)(rowbits));
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, 0xff);
+    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, ~(uint8_t)(rowbits >> 8));
 
     //write lower 8 column bits to U2
     shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, matrix::screen_buf[row + 1]);
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, 0);
     //write upper 8 column bits to U1
-    //shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, matrix::screen_buf[row]);
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, matrix::screen_buf[row]);
 
     digitalWrite(LATCH_PIN, HIGH);
 }

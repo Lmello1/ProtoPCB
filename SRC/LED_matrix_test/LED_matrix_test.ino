@@ -8,8 +8,8 @@ static constexpr uint8_t BUTTON_3 = 17;
 
 
 void setup(void) {
-    matrix::setrow(0,  0b0000000000000000);
-    matrix::setrow(1,  0b0000000000000000);
+    matrix::setrow(0,  0b1100000000000000);
+    matrix::setrow(1,  0b1000000000000000);
     matrix::setrow(2,  0b0000000000000000);
     matrix::setrow(3,  0b0000000000000000);
     matrix::setrow(4,  0b0010000000000100);
