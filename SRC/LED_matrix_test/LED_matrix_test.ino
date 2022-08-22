@@ -8,7 +8,7 @@ static constexpr uint8_t BUTTON_3 = 17;
 
 
 void setup(void) {
-    matrix::setrow(0,  0b1100000000000000);
+    matrix::setrow(0,  0b0000000000000000);
     matrix::setrow(1,  0b1000000000000000);
     matrix::setrow(2,  0b0000000000000000);
     matrix::setrow(3,  0b0000000000000000);
@@ -35,11 +35,8 @@ void setup(void) {
         TCA0.SINGLE.CMP0 = 1041;
         TCA0.SINGLE.INTCTRL = 0b00010000;
     }
-}
-
-
-void loop(void) {
-    /*static uint8_t x = 0;
+    for(;;) {
+      static uint8_t x = 0;
     static uint8_t y = 0;
     
     matrix::set(x, y);
@@ -47,5 +44,6 @@ void loop(void) {
 
     matrix::unset(x, y);
     x = (x < 15) ? x + 1 : 0;
-    y = (y < 15) ? y + 1 : 0;*/
+    y = (y < 15) ? y + 1 : 0;
+    }
 }
