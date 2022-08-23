@@ -8,7 +8,7 @@ volatile matrix::rowmask_t matrix::screen_buf[32] = {0};
 /** 
  * \brief Interrupt triggered by timer b that is used to display the LED matrix row by row
  */
-ISR(TCA0_OVF_vect) {
+ISR(TCA0_CMP0_vect) {
     static uint8_t row = 0;
     //Increment the currently displayed row or reset to the first row if we have displayed the last one
     row = (row >= 32) ? 0 : row + 2;

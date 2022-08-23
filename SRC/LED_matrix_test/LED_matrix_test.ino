@@ -30,20 +30,13 @@ void setup(void) {
     pinMode(DATA_PIN, OUTPUT);
     ATOMIC_BLOCK(ATOMIC_FORCEON) {
         //https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3224-3226-3227-Data-Sheet-DS40002345A.pdf#_OPENTOPIC_TOC_PROCESSING_d5209e60328
-        TCA0.SINGLE.PER = 100;
+        //TCA0.SINGLE.PER = 1000;
         TCA0.SINGLE.CTRLA |= 0b00001111;
         TCA0.SINGLE.CMP0 = 1041;
         TCA0.SINGLE.INTCTRL = 0b00010000;
     }
-    for(;;) {
-      static uint8_t x = 0;
-    static uint8_t y = 0;
-    
-    matrix::set(x, y);
-    delay(10);
+}
 
-    matrix::unset(x, y);
-    x = (x < 15) ? x + 1 : 0;
-    y = (y < 15) ? y + 1 : 0;
-    }
+void loop() {
+    
 }
