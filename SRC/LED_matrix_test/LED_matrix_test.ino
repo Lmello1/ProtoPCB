@@ -36,11 +36,11 @@ void setup(void) {
     }
 }
 
-void loop() {
-    /*static uint8_t x, y;
+static uint8_t x = 0, y = 0;
 
+void loop() {
     matrix::set(x, y);
     x = (x < 15) ? x + 1 : 0;
     y = (y < 15) ? y + 1 : 0;
-    delay(10);*/
+    delay(500);
 }

@@ -87,10 +87,6 @@ ISR(TCA0_CMP0_vect) {
         : "r" (row)
         : "r21", "r22"
     );
-    //write lower 8 row bits to U4
-    //shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, ~(uint8_t)(rowbits));
-    //write upper 8 row bits to U3
-    //shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, ~(uint8_t)(rowbits >> 8));
 
     //write lower 8 column bits to U2
     shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, matrix::screen_buf[row * 2 + 1]);
