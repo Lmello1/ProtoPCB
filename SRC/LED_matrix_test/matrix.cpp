@@ -21,15 +21,15 @@ ISR(TCA0_CMP0_vect) {
         "cbi 0x9, 0"              //Set the latch pin low
         L "mov r21, %0"           //Move the row count to the counter register
         L "cpi r21, 7"            //Check if the row is greater than 7
-        L "brlo lt_7"             //Write row bits for rows below or equal to 8
+        L "brlo lt_7"             //Write row bits for rows below or equal to 7
         L "breq lt_7"
         
         L "gt_7:"
             L "subi r21, 8"
-            L "ldi r22, 7"      //Copy r21 to r22 to have a high bits counter
+            L "ldi r22, 7"      //Assign 7 to r22 in order to traverse the column bits MSB first
 
             L "sbi 0x5, 2"     //Drive the data pin high
-            PULSE_CLOCK //Pulse the clock pin 8 times (manually unrolled loop)
+            PULSE_CLOCK        //Pulse the clock pin 8 times (manually unrolled loop)
             PULSE_CLOCK
             PULSE_CLOCK
             PULSE_CLOCK
@@ -37,44 +37,44 @@ ISR(TCA0_CMP0_vect) {
             PULSE_CLOCK
             PULSE_CLOCK
             PULSE_CLOCK
-                        
+            
+            L "clc"                            //Clear the carry flag, as it is used later for control flow
             L "gt_7_loop:"
-                L "cpi r22, 255"
-                L "breq cols"
+                L "brbs 0, cols"               //If the reverse counter has overflowed, continue to writing column data
                 L "cp r22, r21"                //Check if r22 is equal to the counter
-                L "breq gt_7_loop_z"
-                    PULSE_CLOCK
+                L "breq gt_7_loop_z"           
+                    PULSE_CLOCK                //If r22 is not equal to the current row, write a 1 to the column bits
                     L "jmp gt_7_loop_after"
-                L "gt_7_loop_z:"
+                L "gt_7_loop_z:"               //If r22 is equal to the counter, write a 0 to the column bits
                     L "cbi 0x5, 2"
                     PULSE_CLOCK
                     L "sbi 0x5, 2"
                 L "gt_7_loop_after:"
-                L "dec r22"
-                L "jmp gt_7_loop"
+                L "dec r22"                    //Decrement the reverse counter
+                L "jmp gt_7_loop"              //Repeat the loop
         L "lt_7:"
-            L "clr r22"                   //Zero out the value of r22
+            L "clr r22"                   //Zero out the value of r22 to prepare a counter
             L "sbi 0x5, 2"                //Set the data pin high
             L "lt_7_loop:"
-                L "cpi r22, 8"
+                L "cpi r22, 8"            //Check if we have iterated through the lower bits
                 L "breq lt_7_ones"
                 
                 L "cp r21, r22"           //Compare the counter with the row value
-                L "breq lt_7_loop_z"
-                    PULSE_CLOCK   //Pulse the clock pin
+                L "breq lt_7_loop_z"      //If the counter is not equal to the current row, write a 1 to the shift register
+                    PULSE_CLOCK           //Pulse the clock pin
                     L "jmp lt_7_loop_after"
-                L "lt_7_loop_z:"
+                L "lt_7_loop_z:"          //If the counter is equal to the current row, write a 0 to the shift register
                     L "cbi 0x5, 2"        //Drive the data pin low
-                    PULSE_CLOCK   //Pulse the clock pin
+                    PULSE_CLOCK           //Pulse the clock pin
                     L "sbi 0x5, 2"        //Drive the data pin back high
                 L "lt_7_loop_after:"
                 
-                L "inc r22"
+                L "inc r22"               //Increment the counter value
                 L "jmp lt_7_loop"
             
             L "lt_7_ones:"
             L "sbi 0x5, 2" //Set the data pin high
-            PULSE_CLOCK //Pulse the clock pin 8 times (manually unrolled loop)
+            PULSE_CLOCK    //Pulse the clock pin 8 times (manually unrolled loop)
             PULSE_CLOCK
             PULSE_CLOCK
             PULSE_CLOCK
