@@ -13,7 +13,7 @@ volatile matrix::rowmask_t matrix::screen_buf[32] = {0};
  * \brief Interrupt triggered by timer b that is used to display the LED matrix row by row
  */
 ISR(TCA0_CMP0_vect) {
-    static uint8_t row = 13;
+    static uint8_t row = 0;
     //Increment the currently displayed row or reset to the first row if we have displayed the last one
     row = (row >= 16) ? 0 : row + 1;
     const uint16_t rowbits = 0b1000000000000000 >> (row);
@@ -21,7 +21,7 @@ ISR(TCA0_CMP0_vect) {
         "cbi 0x9, 0"              //Set the latch pin low
         L "mov r21, %0"           //Move the row count to the counter register
         L "cpi r21, 7"            //Check if the row is greater than 7
-        L "brlo lt_7"             //Write row bits for rows below or equal to 7
+        L "brlt lt_7"             //Write row bits for rows below or equal to 7
         L "breq lt_7"
         
         L "gt_7:"
@@ -40,7 +40,7 @@ ISR(TCA0_CMP0_vect) {
             
             L "clc"                            //Clear the carry flag, as it is used later for control flow
             L "gt_7_loop:"
-                L "brbs 0, cols"               //If the reverse counter has overflowed, continue to writing column data
+                L "brbs 2, cols"               //If the reverse counter has overflowed, continue to writing column data
                 L "cp r22, r21"                //Check if r22 is equal to the counter
                 L "breq gt_7_loop_z"           
                     PULSE_CLOCK                //If r22 is not equal to the current row, write a 1 to the column bits
