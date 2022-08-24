@@ -5,6 +5,7 @@ static constexpr uint8_t LATCH_PIN = 12;
 static constexpr uint8_t CLOCK_PIN = 13;
 static constexpr uint8_t DATA_PIN = 9;
 
+
 namespace matrix {
 
 /** \brief Constant passed to the `set` function to turn an LED on, so we can eliminate an unneeded bitshift */
@@ -21,7 +22,7 @@ using rowmask_t = uint8_t;
  * The reason that 32 uint8_ts are stored instead of 16 uint16_ts is because operations on uint8_ts are atomic,
  * meaning they cannot be interrupted by the screen rendering interrupt. So, we can modify portions of the display buffer without needing an `ATOMIC_BLOCK`
  */
-extern volatile rowmask_t screen_buf[32];
+extern volatile matrix::rowmask_t screen_buf[32];
 
 /**
  * Set an LED in the matrix display by (x, y) coordinates

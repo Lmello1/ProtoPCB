@@ -7,7 +7,7 @@ volatile matrix::rowmask_t matrix::screen_buf[32] = {0};
 
 #define L "\n\t"
 #define PULSE_CLOCK "\n\tsbi 0x9, 1\n\tcbi 0x9, 1"
-
+#define BANGBIT(n) "\n\tsbrc r21, " #n "\n\tsbi 0x5, 2\n\tsbrs r21, " #n "\n\tcbi 0x5, 2" PULSE_CLOCK
 
 /** 
  * \brief Interrupt triggered by timer b that is used to display the LED matrix row by row
@@ -16,7 +16,8 @@ ISR(TCA0_CMP0_vect) {
     static uint8_t row = 0;
     //Increment the currently displayed row or reset to the first row if we have displayed the last one
     row = (row >= 16) ? 0 : row + 1;
-    const uint16_t rowbits = 0b1000000000000000 >> (row);
+    //Get the address of the lower byte of the screen buffer
+    matrix::rowmask_t *screen_buf_offset = (matrix::rowmask_t *)(matrix::screen_buf + (row << 1));
     asm volatile(
         "cbi 0x9, 0"              //Set the latch pin low
         L "mov r21, %0"           //Move the row count to the counter register
@@ -82,20 +83,26 @@ ISR(TCA0_CMP0_vect) {
             PULSE_CLOCK
             PULSE_CLOCK
         L "cols:"
-         
+            L "ldd r21, %a1+1"        //Load the second byte into r21
+            L "bitbanging:"
+            BANGBIT(7)
+            BANGBIT(6)
+            BANGBIT(5)
+            BANGBIT(4)
+            BANGBIT(3)
+            BANGBIT(2)
+            BANGBIT(1)
+            BANGBIT(0)
+            L "brts end"           //If this is the second run, exit
+            L "ld r21, %a1"        //Load the first byte into r21
+            L "set"                //Set the T bit in the status register to mark this as the second iteration
+            L "jmp bitbanging"
+        L "end:"
+        L "sbi 0x9, 0"             //Drive the latch pin low
         :
-        : "r" (row)
+        : "r" (row), "b" (screen_buf_offset)
         : "r21", "r22"
     );
-
-    //write lower 8 column bits to U2
-    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, matrix::screen_buf[row * 2 + 1]);
-    //write upper 8 column bits to U1
-    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, matrix::screen_buf[row * 2]);
-    asm(
-      "sbi 0x9, 0 \n\t"
-    );
-    //TCA0.SINGLE.CNT = 0;
 }
 
 #undef L
