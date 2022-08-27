@@ -100,9 +100,7 @@ ISR(TCA0_CMP0_vect) {
         L "end:"
         L "sbi 0x9, 0"             //Drive the latch pin low
         :
-        : "r" (row), "b" (screen_buf_offset)
+        : "r" (row), "e" (screen_buf_offset)
         : "r21", "r22"
     );
 }
-
-#undef L
