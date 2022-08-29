@@ -17,6 +17,7 @@ NOTE: Shift register U3 is reversed for easier routing.
 ## Coming soon
 * Pong
 * Tic Tac Toe
+* Tetris
 
 ## LED matrix info
 ```
