@@ -1,10 +1,21 @@
 # ProtoPCB
 
-Business card PCB and pocket Attiny3227 and LED matrix playground
+Business card PCB and pocket Attiny3227 and LED matrix playground. Powered by a CR2032 battery
 
 ## Description
 
-A business card PCB based on the ATTINY3227 chipset. Using 4 74HC595D shift registers to drive a 256 LED matrix. With a standard UDPI interface and 3 input buttons the possibilities are endless 
+A business card PCB based on the ATTINY3227 chipset. Using 4 74HC595D shift registers to drive a 256 LED matrix. With a standard UDPI interface and 3 input buttons the possibilities are endless.
+The current code includes various games and demo programs. Please feel free to make your own and share!
+
+NOTE: Shift register U3 is reversed for easier routing.
+
+## Current programs
+* Snake
+
+## Coming soon
+* Pong
+* Tetris
+* Tic Tac Toe
 
 ## LED matrix info
 ```
@@ -18,7 +29,7 @@ V
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X \          |
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |          |
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |          |
-X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |---- U3   V
+X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |---- U3---V--(REVERSED)
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |          |
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |          |
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |          |
