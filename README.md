@@ -44,6 +44,14 @@ X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X |          |
 X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X /          *
 ```
 
+
+## PCB Revision History
+* Rev 1.0 - 1st working version (Do not recreate-one shorted track)
+
+* Rev 2.0 - Vertical PCB format and visual improvements. Changed foorptints for shift registers
+
+* Rev 3.0 - CR2032 battery holder added for the back, Track routing improvements
+
 ## Creators
 
 Landon Mello
