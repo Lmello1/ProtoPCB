@@ -11,6 +11,7 @@ NOTE: Shift register U3 is reversed for easier routing.
 
 ## Current programs
 * Snake
+
   ![Snake](https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/Snake.gif)
 
 ## Coming soon
