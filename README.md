@@ -2,9 +2,9 @@
 
 Business card PCB and pocket Attiny3227 and LED matrix playground. Powered by a CR2032 battery
 <p align="middle">
-  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Front.JPG" width="100" />
-  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Front_off.JPG" width="100" /> 
-  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Back_top.jpg" width="100" />
+  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Front.JPG"/>
+  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Front_off.JPG"/> 
+  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Back_top.jpg"/>
 </p>
 
 ## Description
