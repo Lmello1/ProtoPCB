@@ -1,6 +1,11 @@
 # ProtoPCB
 
 Business card PCB and pocket Attiny3227 and LED matrix playground. Powered by a CR2032 battery
+<p align="middle">
+  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Front.JPG" width="100" />
+  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Front_off.JPG" width="100" /> 
+  <img src="https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/PCB_Back_top.JPG" width="100" />
+</p>
 
 ## Description
 
@@ -11,8 +16,6 @@ NOTE: Shift register U3 is reversed for easier routing.
 
 ## Current programs
 * Snake
-
-  ![Snake](https://github.com/Lmello1/ProtoPCB/blob/main/PCB%20rev%202.0/Photos/Snake.gif)
 
 ## Coming soon
 * Pong
